@@ -386,20 +386,22 @@
             );
         }
 
-        function queryNearbyFacilities() {
-            const diagStatus = document.getElementById("diagStatus");
-            if (!currentLat || !currentLon) {
-                alert("Cannot parse facility network targets until hardware GPS satellite lock is initialized first.");
-                return;
-            }
-            diagStatus.innerHTML = "🔄 Querying open street routing matrices...";
-            setTimeout(() => {
-                // Open real live spatial coordinates map view matching device position
-                window.open(`https://www.google.com/maps/search/hospital/@${currentLat},${currentLon},14z`, '_blank');
-                diagStatus.innerHTML = "🟢 Coordinates mapped to localized medical infrastructure maps.";
-                document.getElementById("diagnosticCard").style.borderColor = "#10b981";
-            }, 800);
-        }
+       function queryNearbyFacilities() {
+    const diagStatus = document.getElementById("diagStatus");
+    if (!currentLat || !currentLon) {
+        alert("Cannot parse facility network targets until hardware GPS satellite lock is initialized first.");
+        return;
+    }
+    diagStatus.innerHTML = "🔄 Querying local medical infrastructure...";
+    setTimeout(() => {
+        // FIXED: Uses the true, universal web coordinate syntax for Google Maps
+        const mapsUrl = `https://www.google.com/maps/search/hospitals+and+labs/@${currentLat},${currentLon},14z`;
+        window.open(mapsUrl, '_blank');
+        
+        diagStatus.innerHTML = "🟢 Coordinates mapped to localized medical infrastructure maps.";
+        document.getElementById("diagnosticCard").style.borderColor = "#10b981";
+    }, 800);
+}
 
         function verifySOSLink() {
             document.getElementById("sosStatus").innerHTML = "🟢 Direct Local Interface Channel Online";
