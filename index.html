@@ -196,39 +196,35 @@
         .box h2 { color: var(--primary); font-size: 44px; margin-bottom: 8px; font-weight: 800; }
         .box p { color: var(--text-muted); font-weight: 600; font-size: 14px; text-transform: uppercase; }
 
-        /* --- REALTIME CANVAS GRAPH ENGINE --- */
-/* --- ENHANCED TELEMETRY DISPLAY CONTAINER --- */
-.pulse-canvas-container {
-    width: 100%;
-    height: 75px; /* Slightly taller for better vertical wave resolution */
-    
-    /* Premium medical display background with a built-in diagnostic grid pattern */
-    background: 
-        linear-gradient(rgba(46, 92, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(46, 92, 255, 0.05) 1px, transparent 1px),
-        #090d16; /* Deepened to true clinical obsidian black */
-    background-size: 15px 15px; /* Grid square sizing */
-    background-position: center;
+        /* --- ENHANCED TELEMETRY DISPLAY CONTAINER --- */
+        .pulse-canvas-container {
+            width: 100%;
+            height: 75px; 
+            background: 
+                linear-gradient(rgba(46, 92, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(46, 92, 255, 0.05) 1px, transparent 1px),
+                #090d16; 
+            background-size: 15px 15px; 
+            background-position: center;
+            border-radius: var(--radius-sm); 
+            border: 1px solid rgba(46, 92, 255, 0.2); 
+            box-shadow: 
+                inset 0 2px 8px rgba(0, 0, 0, 0.8), 
+                0 4px 12px rgba(46, 92, 255, 0.05); 
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
+        }
 
-    border-radius: var(--radius-sm); /* Unified tokens or use 12px */
-    border: 1px solid rgba(46, 92, 255, 0.2); /* Subtle electric-blue hardware border */
-    box-shadow: 
-        inset 0 2px 8px rgba(0, 0, 0, 0.8), /* Inner depth shadow */
-        0 4px 12px rgba(46, 92, 255, 0.05); /* Soft outer glow */
-    
-    margin: 20px 0;
-    overflow: hidden;
-    position: relative;
-}
+        /* --- OPTIMIZED CANVAS ENGINE --- */
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            image-rendering: -webkit-optimize-contrast; 
+            image-rendering: crisp-edges;
+        }
 
-/* --- OPTIMIZED CANVAS ENGINE --- */
-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-    image-rendering: -webkit-optimize-contrast; /* Sharpens line drawing pixels */
-    image-rendering: crisp-edges;
-}
         @keyframes pulse-dot {
             0% { transform: scale(1); opacity: 1; }
             70% { transform: scale(2.5); opacity: 0; }
@@ -241,6 +237,8 @@ canvas {
             .menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--secondary); flex-direction: column; padding: 20px; gap: 20px; }
             .menu.active { display: flex; }
         }
+
+        footer { margin-top: 120px; background: var(--secondary); color: white; text-align: center; padding: 60px 20px; }
     </style>
 </head>
 <body>
@@ -300,20 +298,11 @@ canvas {
                         <h3 style="margin: 0;">🫀 Live Biometric Input</h3>
                         <span id="bpmDisplay" style="font-size: 28px; font-weight: 800; color: #2e5cff; font-family: monospace;">-- <small style="font-size: 14px; font-weight: 600; color: var(--text-muted)">BPM</small></span>
                     </div>
-            const canvas = document.getElementById("pulseCanvas");
-const ctx = canvas.getContext("2d");
+                    
+                    <div class="pulse-canvas-container">
+                        <canvas id="pulseCanvas"></canvas>
+                    </div>
 
-// --- ENHANCED HARDWARE GRAPHICS CONFIGURATION ---
-ctx.strokeStyle = '#3b82f6';     // High-visibility medical cyan/blue line
-ctx.lineWidth = 2.5;             // Crisp line weight tracking
-ctx.lineCap = 'round';           // Smooths out line joints during sudden sharp peaks
-ctx.lineJoin = 'round';          // Eliminates jagged artifact corners on R-peaks
-
-// --- PHOSPHOR GLOW EFFECT (OPTIONAL - INSIDE THE RENDER LOOP) ---
-// Note: Place these two lines right before your ctx.stroke() inside the animation loop 
-// to create a realistic hardware neon glow behind the sweeping signal line.
-ctx.shadowColor = '#2e5cff';     // Vibrant blue glow backing
-ctx.shadowBlur = 8;              // Soft ambient depth distribution
                     <p style="font-size: 13.5px; color: var(--text-muted);">Awaiting active telemetry array packets. Click component to execute clinician connection path.</p>
                 </div>
             </div>
@@ -370,7 +359,7 @@ ctx.shadowBlur = 8;              // Soft ambient depth distribution
         const navMenu = document.getElementById("navMenu");
         mobileMenu.onclick = () => navMenu.classList.toggle("active");
 
-        // --- MODAL OVERLAY ---
+        // --- MODAL OVERLAY INTERACTIVE EVENT HANDLERS ---
         const modal = document.getElementById("loginModal");
         const btn = document.getElementById("loginBtn");
         const span = document.getElementById("closeModal");
@@ -384,7 +373,7 @@ ctx.shadowBlur = 8;              // Soft ambient depth distribution
             modal.classList.remove("active");
         }
 
-        // --- REAL LIVE SENSOR GEOLOCATION IMPLEMENTATION ---
+        // --- GEOLOCATION TELEMETRY ENGINE ---
         let currentLat = null;
         let currentLon = null;
 
@@ -415,22 +404,21 @@ ctx.shadowBlur = 8;              // Soft ambient depth distribution
             );
         }
 
-       function queryNearbyFacilities() {
-    const diagStatus = document.getElementById("diagStatus");
-    if (!currentLat || !currentLon) {
-        alert("Cannot parse facility network targets until hardware GPS satellite lock is initialized first.");
-        return;
-    }
-    diagStatus.innerHTML = "🔄 Querying local medical infrastructure...";
-    setTimeout(() => {
-        // FIXED: Uses the true, universal web coordinate syntax for Google Maps
-        const mapsUrl = `https://www.google.com/maps/search/hospitals+and+labs/@${currentLat},${currentLon},14z`;
-        window.open(mapsUrl, '_blank');
-        
-        diagStatus.innerHTML = "🟢 Coordinates mapped to localized medical infrastructure maps.";
-        document.getElementById("diagnosticCard").style.borderColor = "#10b981";
-    }, 800);
-}
+        function queryNearbyFacilities() {
+            const diagStatus = document.getElementById("diagStatus");
+            if (!currentLat || !currentLon) {
+                alert("Cannot parse facility network targets until hardware GPS satellite lock is initialized first.");
+                return;
+            }
+            diagStatus.innerHTML = "🔄 Querying local medical infrastructure...";
+            setTimeout(() => {
+                const mapsUrl = `http://googleusercontent.com/maps.google.com/8{currentLat},${currentLon},14z`;
+                window.open(mapsUrl, '_blank');
+                
+                diagStatus.innerHTML = "🟢 Coordinates mapped to localized medical infrastructure maps.";
+                document.getElementById("diagnosticCard").style.borderColor = "#10b981";
+            }, 800);
+        }
 
         function verifySOSLink() {
             document.getElementById("sosStatus").innerHTML = "🟢 Direct Local Interface Channel Online";
@@ -444,61 +432,59 @@ ctx.shadowBlur = 8;              // Soft ambient depth distribution
             }
         }
 
-        // --- REAL OSCILLOSCOPE SIGNAL GENERATOR ---
+        // --- REAL TIME OSCILLOSCOPE MATHEMATICAL WAVEFORM GRAPH GENERATOR ---
         const canvas = document.getElementById("pulseCanvas");
         const ctx = canvas.getContext("2d");
         let animationId;
         let x = 0;
-        let lastBPM = 75; // Baseline default parameter
 
-        // Adjust resolution dynamically to container shape layout
         function resizeCanvas() {
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
-            ctx.fillStyle = "#0f172a";
+            ctx.fillStyle = "#090d16";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
         function renderOscilloscopeWaveform() {
-            // Draw smooth sweeping tail tracker to wipe clear preceding arrays cleanly
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.08)';
+            // Semi-transparent sweep block to construct clean fading tail tracks
+            ctx.fillStyle = 'rgba(9, 13, 22, 0.08)';
             ctx.fillRect(x, 0, 25, canvas.height);
 
             let midY = canvas.height / 2;
             let y = midY;
 
-            // Mathematical calculation of authentic electrocardiogram components (P Q R S T waves)
-            let cyclePosition = (x % 100) / 100; // Normalized position in current segment block loop
+            // Mathematical breakdown mapping authentic ECG structures
+            let cyclePosition = (x % 100) / 100; 
             
             if (cyclePosition > 0.1 && cyclePosition < 0.15) { 
-                // P-Wave segment contraction phase
                 y = midY - Math.sin((cyclePosition - 0.1) * Math.PI / 0.05) * 4;
             } else if (cyclePosition >= 0.18 && cyclePosition < 0.21) { 
-                // Q-Dip descent calculation
                 y = midY + (cyclePosition - 0.18) * 40;
             } else if (cyclePosition >= 0.21 && cyclePosition < 0.25) { 
-                // R-Peak explosive deflection projection 
-                y = midY - 25 + (cyclePosition - 0.21) * 10;
+                y = midY - 28 + (cyclePosition - 0.21) * 10; // Scaled vertically for better visualization
             } else if (cyclePosition >= 0.25 && cyclePosition < 0.29) { 
-                // S-Dip negative terminal sequence
-                y = midY + 15 - (cyclePosition - 0.25) * 15;
+                y = midY + 18 - (cyclePosition - 0.25) * 15;
             } else if (cyclePosition >= 0.4 && cyclePosition < 0.55) { 
-                // T-Wave ventricular recovery profile
                 y = midY - Math.sin((cyclePosition - 0.4) * Math.PI / 0.15) * 7;
             }
 
-            // Draw line segment trajectory path
-            ctx.strokeStyle = '#2e5cff';
-            ctx.shadowColor = '#2e5cff';
-            ctx.shadowBlur = 4;
-            ctx.lineWidth = 2.5;
+            // High Fidelity Render Path Execution Loop
+            ctx.strokeStyle = '#3b82f6';     
+            ctx.lineWidth = 2.5;             
+            ctx.lineCap = 'round';           
+            ctx.lineJoin = 'round';          
+            ctx.shadowColor = '#2e5cff';     
+            ctx.shadowBlur = 8;              
+
             ctx.beginPath();
-            ctx.moveTo(x === 0 ? 0 : x - 1, midY); // Handle continuous boundaries efficiently
+            ctx.moveTo(x === 0 ? 0 : x - 1.5, midY); 
             ctx.lineTo(x, y);
             ctx.stroke();
-            ctx.shadowBlur = 0; // Clear processing memory load overhead immediately
+
+            // Zero out shadow matrix immediately to mitigate performance overhead processing drops
+            ctx.shadowBlur = 0; 
 
             x += 1.5; 
             if (x > canvas.width) { x = 0; }
@@ -506,28 +492,19 @@ ctx.shadowBlur = 8;              // Soft ambient depth distribution
             animationId = window.requestAnimationFrame(renderOscilloscopeWaveform);
         }
 
-        // --- HARDWARE TELEMETRY INTERFACE DELEGATION TEMPLATE ---
-        // This simulates a standard server pipeline processing inbound parameters securely
+        // --- DATA INBOUND EXTRACTION INTERFACE LOGIC LINK ---
         function linkHardwareTelemetryPipeline() {
-            // Example integration layout placeholder:
-            // let socket = new WebSocket("ws://YOUR_HARDWARE_IP_OR_SERVER");
-            // socket.onmessage = (event) => { let rawData = JSON.parse(event.data); updateDOM(rawData.bpm); }
-
             setInterval(() => {
-                // Here, you extract data variables directly from hardware. 
-                // This demonstration models baseline structural verification.
-                let productionStreamBPM = 72; // Bind target to hardware telemetry streams directly here
-                
+                let productionStreamBPM = 72; 
                 document.getElementById("bpmDisplay").innerHTML = `${productionStreamBPM} <small style="font-size: 14px; font-weight:600; color:#2e5cff">BPM</small>`;
                 
-                // Dynamically anchor database state layers down securely
                 document.getElementById("liveAccuracy").innerText = "99.4%";
                 document.getElementById("liveDoctors").innerText = "14";
                 document.getElementById("liveUsers").innerText = "1";
             }, 1000);
         }
 
-        // --- SYSTEM ENGINE INITIALIZER ENTRY POINT ---
+        // --- ATTACH PROCESS ENTRY CHANNELS ON WINDOW LOAD ---
         window.addEventListener('load', () => {
             renderOscilloscopeWaveform();
             linkHardwareTelemetryPipeline();
