@@ -120,8 +120,61 @@
 
         .logo { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 800; }
         .menu { display: flex; gap: 32px; align-items: center; }
-        .menu a { color: white; text-decoration: none; font-size: 15px; font-weight: 500; opacity: 0.85; }
-        .menu a:hover { opacity: 1; color: var(--accent); }
+        
+        /* --- ENHANCED SYSTEM NAVIGATION LINKS --- */
+        .menu a.menu-link {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.75;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            padding: 6px 0;
+            transition: var(--transition);
+        }
+
+        .menu a.menu-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.25s ease-in-out;
+        }
+
+        .menu a.menu-link:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .menu a.menu-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-dot {
+            width: 6px;
+            height: 6px;
+            background: transparent;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .menu a.menu-link.active {
+            opacity: 1;
+            color: var(--white);
+        }
+
+        .menu a.menu-link.active .nav-dot {
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
 
         .login-btn {
             background: var(--white);
@@ -131,6 +184,12 @@
             border-radius: 50px;
             font-weight: 700;
             cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .login-btn:hover {
+            background: var(--accent);
+            color: var(--secondary);
         }
 
         .menu-toggle {
@@ -178,7 +237,8 @@
         .section-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 64px; height: 4px; background: var(--primary); }
 
         .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; }
-        .card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid rgba(15, 23, 42, 0.04); }
+        .card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid rgba(15, 23, 42, 0.04); cursor: pointer; transition: var(--transition); }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
         .card-img-wrapper { height: 230px; overflow: hidden; position: relative; }
         .card img { width: 100%; height: 100%; object-fit: cover; }
         .card-content { padding: 32px; }
@@ -260,10 +320,10 @@
         <div class="logo"><span class="icon">🩺</span> Smart Health Platform</div>
         <div class="menu-toggle" id="mobileMenu"><span></span><span></span><span></span></div>
         <div class="menu" id="navMenu">
-            <a href="#">System Home</a>
-            <a href="#services">Monitoring Engine</a>
-            <a href="#services">Clinician Network</a>
-            <a href="#services">SOS Routing</a>
+            <a href="#" class="menu-link active"><span class="nav-dot"></span>System Home</a>
+            <a href="#services" class="menu-link"><span class="nav-dot"></span>Monitoring Engine</a>
+            <a href="#services" class="menu-link"><span class="nav-dot"></span>Clinician Network</a>
+            <a href="#services" class="menu-link"><span class="nav-dot"></span>SOS Routing</a>
             <button class="login-btn" id="loginBtn">Provider Login</button>
         </div>
     </nav>
@@ -350,7 +410,7 @@
 
     <footer>
         <strong>Smart Health Monitoring Platform</strong>
-        <p>© Ramesh Kumar K 2026 Engine Core System Pipelines.</p>
+        <p> Designed By  Ramesh Kumar K @2026 .</p>
     </footer>
 
     <script>
@@ -358,6 +418,18 @@
         const mobileMenu = document.getElementById("mobileMenu");
         const navMenu = document.getElementById("navMenu");
         mobileMenu.onclick = () => navMenu.classList.toggle("active");
+
+        // --- NAVIGATION INTERACTIVE TRACKING LINK LOOP ---
+        document.querySelectorAll('.menu-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.menu-link').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+                
+                if(navMenu.classList.contains("active")) {
+                    navMenu.classList.remove("active");
+                }
+            });
+        });
 
         // --- MODAL OVERLAY INTERACTIVE EVENT HANDLERS ---
         const modal = document.getElementById("loginModal");
@@ -397,7 +469,7 @@
                     document.getElementById("geoCard").style.borderColor = "#10b981";
                 },
                 (error) => {
-                    cityEl.innerHTML = "❌ Hardware tracking link rejected by user access protocols.";
+                    cityEl.innerHTML = " Hardware tracking link rejected by user access protocols.";
                     console.error(error);
                 },
                 { enableHighAccuracy: true, timeout: 10000 }
@@ -412,7 +484,7 @@
             }
             diagStatus.innerHTML = "🔄 Querying local medical infrastructure...";
             setTimeout(() => {
-                const mapsUrl = `http://googleusercontent.com/maps.google.com/8{currentLat},${currentLon},14z`;
+                const mapsUrl = `https://www.google.com/maps?q=${currentLat},${currentLon}&z=14`;
                 window.open(mapsUrl, '_blank');
                 
                 diagStatus.innerHTML = "🟢 Coordinates mapped to localized medical infrastructure maps.";
@@ -463,7 +535,7 @@
             } else if (cyclePosition >= 0.18 && cyclePosition < 0.21) { 
                 y = midY + (cyclePosition - 0.18) * 40;
             } else if (cyclePosition >= 0.21 && cyclePosition < 0.25) { 
-                y = midY - 28 + (cyclePosition - 0.21) * 10; // Scaled vertically for better visualization
+                y = midY - 28 + (cyclePosition - 0.21) * 10; 
             } else if (cyclePosition >= 0.25 && cyclePosition < 0.29) { 
                 y = midY + 18 - (cyclePosition - 0.25) * 15;
             } else if (cyclePosition >= 0.4 && cyclePosition < 0.55) { 
