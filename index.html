@@ -197,14 +197,20 @@
         .box p { color: var(--text-muted); font-weight: 600; font-size: 14px; text-transform: uppercase; }
 
         /* --- REALTIME CANVAS GRAPH ENGINE --- */
-        .pulse-canvas-container {
-            width: 100%;
-            height: 60px;
-            background: #0f172a;
-            border-radius: var(--radius-sm);
-            margin: 15px 0;
-            overflow: hidden;
-        }
+ .pulse-canvas-container {
+    width: 100%;             /* Fills the exact width of your card */
+    height: 60px;            /* The vertical thickness of the wave monitor */
+    background: #0f172a;     /* Deep medical-slate black background */
+    border-radius: 12px;     /* Smooth, rounded corners matching the UI */
+    margin: 15px 0;          /* Space above and below the monitor box */
+    overflow: hidden;        /* Prevents the drawing line from clipping outside */
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;          /* Eliminates default inline spacing bugs */
+}
         canvas { width: 100%; height: 100%; display: block; }
 
         footer { margin-top: 120px; background: var(--secondary); color: white; text-align: center; padding: 60px 20px; }
@@ -255,14 +261,14 @@
             <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1200&auto=format&fit=crop" alt="healthcare telemetry telemetry tracking">
         </div>
         <div>
-            <h1>Elderly Health Core Telemetry System</h1>
+            <h1>Smart Health Core System</h1>
             <p>Production hardware link interface tracking biometric stream variables, geofencing coordinates, and immediate SOS logic arrays.</p>
             <button onclick="window.location.href='#services'">Initialize Core Channels →</button>
         </div>
     </section>
 
     <section class="section" id="services">
-        <h2 class="section-title">Active Telemetry Pipelines</h2>
+        <h2 class="section-title">Active Healthcare Pipelines</h2>
         <div class="cards">
             
             <div class="card" style="border: 2px solid rgba(46, 92, 255, 0.15);" onclick="window.open('https://www.narayanahealth.org/bangalore/cardiac-surgery-adult/dr-devi-prasad-shetty', '_blank')">
@@ -280,11 +286,12 @@
                         <h3 style="margin: 0;">🫀 Live Biometric Input</h3>
                         <span id="bpmDisplay" style="font-size: 28px; font-weight: 800; color: #2e5cff; font-family: monospace;">-- <small style="font-size: 14px; font-weight: 600; color: var(--text-muted)">BPM</small></span>
                     </div>
-                    
-                    <div class="pulse-canvas-container">
-                        <canvas id="pulseCanvas"></canvas>
-                    </div>
-                    
+              const canvas = document.getElementById("pulseCanvas");
+const ctx = canvas.getContext("2d");
+
+// To change the line color or glow:
+ctx.strokeStyle = '#2e5cff'; // Electric blue line
+ctx.lineWidth = 2.5;         // Line thickness
                     <p style="font-size: 13.5px; color: var(--text-muted);">Awaiting active telemetry array packets. Click component to execute clinician connection path.</p>
                 </div>
             </div>
